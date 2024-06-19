@@ -3,12 +3,14 @@ This is planned to be a Sound-Changeaplier made by Melanie Jones.
 """
 
 import curses
+from phoneme_chart import *
+
+print(get_symbol(Place.ALVEOLAR, Manner.NASAL))
 
 def main_menu(stdscr: curses.window):
-    lines = [[" " for _ in range(0xff)] for _ in range(0xff)]
+    user_input = ""
 
     k = 0
-    cursor_x = cursor_y = 0
 
     stdscr.clear()
     stdscr.refresh()
@@ -21,38 +23,36 @@ def main_menu(stdscr: curses.window):
     while k != ord('Q'):
         stdscr.clear()
         height, width = stdscr.getmaxyx()
-
-        if k == curses.KEY_DOWN:
-            cursor_y += 1
-        if k == curses.KEY_UP:
-            cursor_y -= 1
-        if k == curses.KEY_RIGHT:
-            cursor_x += 1
-        if k == curses.KEY_LEFT:
-            cursor_x -= 1
         
         if 0 < k <= 0xff:
             if k == ord('\b'):
-                cursor_x -= 1
-                lines[cursor_y][cursor_x] = ' '
+                user_input = user_input[:len(user_input) - 1]
             elif k == ord('\n'):
-                cursor_x = 0
-                cursor_y += 1
+                user_input = ''
             else:
-                lines[cursor_y][cursor_x] = chr(k)
-                cursor_x += 1
+                user_input += chr(k)
 
-        cursor_x = min(width - 1, max(0, cursor_x))
-        cursor_y = min(height - 1, max(0, cursor_y))
+        stdscr.border()
+        for x in range(width - 2):
+            stdscr.addch(height - 3, x + 1, '─')
+        for j in range(9):
+            for x in range(87):
+                stdscr.addch(j * 3 + 2, x + 1, '─')
+        for i in range(8):
+            for y in range(min(25, height - 4)):
+                stdscr.addch(y + 1, i * 11 + 10, "│")
 
-        stdscr.move(cursor_y, cursor_x)
+        for p in range(7):
+            stdscr.addstr(1, p * 11 + 11, ['Bilabial', 'Alveolar', 'Post-Alv.', 'Palatal', 'Velar', 'Uvular', 'Glottal'][p])
+            for m in range(8):
+                ch = get_symbol(p + 1, m + 1, False)
+                if ch != '*':
+                    stdscr.addstr(m * 3 + 3, p * 11 + 11, ch)
+                ch = get_symbol(p + 1, m + 1, True)
+                if ch != '*':
+                    stdscr.addstr(m * 3 + 3, p * 11 + 14, ch)
 
-        for y in range(min(height - 1, len(lines))):
-            if y == cursor_y:
-                stdscr.attron(curses.color_pair(1))
-            stdscr.addstr(y, 0, "".join(lines[y]).replace(chr(0), ''))
-            if y == cursor_y:
-                stdscr.attroff(curses.color_pair(1))
+        stdscr.addstr(height - 2, 1, '>>> ' + user_input)
 
         stdscr.refresh()
 
