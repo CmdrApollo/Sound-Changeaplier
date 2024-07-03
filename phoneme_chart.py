@@ -1,21 +1,21 @@
 class Place:
-    BILABIAL      = 1
-    ALVEOLAR      = 2
-    POST_ALVEOLAR = 3
-    PALATAL       = 4
-    VELAR         = 5
-    UVULAR        = 6
-    GLOTTAL       = 7
+    BILABIAL      = 0
+    ALVEOLAR      = 1
+    POST_ALVEOLAR = 2
+    PALATAL       = 3
+    VELAR         = 4
+    UVULAR        = 5
+    GLOTTAL       = 6
 
 class Manner:
-    STOP        = 1
-    FRICATIVE   = 2
-    AFFRICATE   = 3
-    NASAL       = 4
-    LATERAL     = 5
-    TAP         = 6
-    TRILL       = 7
-    APPROXIMANT = 8
+    STOP        = 0
+    FRICATIVE   = 1
+    AFFRICATE   = 2
+    NASAL       = 3
+    LATERAL     = 4
+    TAP         = 5
+    TRILL       = 6
+    APPROXIMANT = 7
 
 MASTER_CHART_VOICELESS = [
     [ 'p' , 't' , '*' , 'c' , 'k' , 'q' , 'ʔ'  ],
